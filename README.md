@@ -99,3 +99,22 @@ Presenter - презентер содержит основную логику п
 `trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
 
 git@github.com:YanaPoddubnaya/weblarek.git
+
+
+Data:
+
+interface IProduct {
+  id: string; // уникальный идентификатор товара
+  description: string; // описание товара
+  image: string; // ссылка на изображение товара
+  title: string; // название товара
+  category: string; // категория, к которой принадлежит товар
+  price: number | null; // цена товара, может отсутствовать
+}
+
+interface IBuyer {
+  payment: card|cash; // способ оплаты: карта или наличные
+  email: string; // адрес электронной почты покупателя
+  phone: string; // номер телефона
+  address: string; // адрес покупателя
+}
