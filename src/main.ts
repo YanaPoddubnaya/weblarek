@@ -4,7 +4,7 @@ import {apiProducts} from '../src/utils/data';
 import Catalog from './components/Models/Catalog';
 import Cart from './components/Models/Cart';
 import Buyer from './components/Models/Buyer';
-import ApiService from './components/Models/ApiService';
+import ApiService from './components/Api/ApiService.ts';
 import {Api} from './components/base/Api';
 import {API_URL} from "./utils/constants";
 
@@ -55,7 +55,7 @@ if (Object.keys(validationErrors).length > 0) {
 
 async function fetchAndSaveProducts() {
     try {
-        const products = await apiService.fetchProducts(); // вызов реального API
+        const products = await apiService.fetchProducts();
         catalog.setProducts(products);
         console.log('Каталог товаров:', catalog.getProducts());
     } catch (error) {
