@@ -1,15 +1,30 @@
 import "./scss/styles.scss";
 
-import {apiProducts} from '../src/utils/data';
+import { ProductGalleryItem } from "./components/View/Product/ProductGallery";
+import { EventEmitter } from "./components/base/Events";
 import Catalog from './components/Models/Catalog';
 import Cart from './components/Models/Cart';
 import Buyer from './components/Models/Buyer';
 import ApiService from './components/Api/ApiService.ts';
 import {Api} from './components/base/Api';
-import {API_URL} from "./utils/constants";
+import {Gallery} from "./components/View/Gallery.ts";
+
+import {apiProducts} from './utils/data';
+import {cloneTemplate} from "./utils/utils.ts";
+import {API_URL, CDN_URL} from "./utils/constants";
+
+import {IBuyer, IProduct} from "./types";
+import {Modal} from "./components/View/Modal.ts";
+import {ProductViewItem} from "./components/View/Product/ProductViewItem.ts";
+import {Header} from "./components/View/Header.ts";
+import {ProductCartItem} from "./components/View/Product/ProductCartItem.ts";
+import { CartView } from "./components/View/CartView.ts";
+import {OrderForm} from "./components/View/Forms/OrderForm.ts";
+import {ContactsForm} from "./components/View/Forms/ContactsForm.ts";
+import {OrderSuccess} from "./components/View/Order.ts";
 
 //создаем экземпляры классов
-const catalog = new Catalog();
+const catalog = new Catalog(CDN_URL);
 const cart = new Cart();
 const buyer = new Buyer();
 
@@ -64,3 +79,169 @@ async function fetchAndSaveProducts() {
 }
 
 fetchAndSaveProducts();
+
+const events = new EventEmitter();
+
+// header
+const headerEl = document.querySelector('.header') as HTMLElement;
+const header = new Header(events, headerEl);
+///
+
+/// MODAL
+const modalTmpl = document.querySelector('#modal-container') as HTMLElement;
+const modal = new Modal(modalTmpl, events);
+////
+
+const galleryEl = document.querySelector('.gallery') as HTMLElement;
+const cardCatalogTmpl = document.querySelector('#card-catalog') as HTMLTemplateElement;
+const modalItemTmpl = document.querySelector('#card-preview') as HTMLTemplateElement;
+
+// gallery
+const gallery = new Gallery(galleryEl);
+const galleryItems = catalog.getProducts().map((product: IProduct) => {
+    const cardView = new ProductGalleryItem(
+        cloneTemplate(cardCatalogTmpl),
+        {
+            onClick: () => events.emit('product:select', product),
+        }
+    );
+
+    return cardView.render(product);
+});
+
+gallery.render({ catalog: galleryItems});
+
+
+// cart
+const cartItemTmpl = document.querySelector('#card-basket') as HTMLTemplateElement;
+const orderTmpl = document.querySelector('#order') as HTMLTemplateElement;
+const contactsFormTmpl = document.querySelector('#contacts') as HTMLTemplateElement;
+const orderSuccessTmpl = document.querySelector('#success') as HTMLTemplateElement;
+const cartBasketEl = document.querySelector('#basket') as HTMLTemplateElement;
+const cartView = new CartView(cloneTemplate(cartBasketEl), events);
+const orderForm = new OrderForm(cloneTemplate(orderTmpl), events);
+const contactsForm = new ContactsForm(cloneTemplate(contactsFormTmpl), events);
+const orderSuccess = new OrderSuccess(events, cloneTemplate(orderSuccessTmpl));
+// events
+
+function renderBasketModal() {
+    const cartItems = cart.getItems().map((product: IProduct, index) => {
+        const cartItem = new ProductCartItem(
+            cloneTemplate(cartItemTmpl),
+            {
+                onRemoveCartClick() {
+                    cart.removeItem(product);
+                    events.emit("cart:change", product);
+
+                    renderBasketModal();
+                },
+            },
+        );
+
+        return cartItem.render({
+            index: index + 1,
+            ...product,
+        });
+    });
+
+    modal.content = cartView.render({
+        items: cartItems,
+        totalPrice: cart.getTotalPrice(),
+    });
+}
+
+events.on("basket:open", () => {
+    renderBasketModal();
+
+    modal.open();
+});
+
+events.on("cart:paymentDetails", () => {
+    modal.content = orderForm.render();
+});
+
+events.on("cart:contactDetails", () => {
+    modal.content = contactsForm.render();
+});
+
+events.on("form:paymentMethodChange", (event: any) => {
+    const fields = ['payment', 'address'];
+
+    if (fields.includes(event.field)) {
+        buyer.setData({ [event.field]: event.value });
+    }
+
+    const errors = buyer.validate();
+    const formErrors = Object.entries(errors)
+        .filter(([key]) => fields.includes(key));
+
+    if (formErrors.length) {
+        orderForm.setError(formErrors[0][1]);
+
+        return;
+    }
+
+    orderForm.clearError();
+});
+
+events.on("form:detailsChange", (event: any) => {
+    const fields = ['phone', 'email'];
+
+    if (fields.includes(event.field)) {
+        buyer.setData({ [event.field]: event.value });
+    }
+
+    const errors = buyer.validate();
+    const formErrors = Object.entries(errors)
+        .filter(([key]) => fields.includes(key));
+
+    if (formErrors.length) {
+        contactsForm.setError(formErrors[0][1]);
+
+        return;
+    }
+
+    contactsForm.clearError();
+});
+
+events.on("cart:done", () => {
+    modal.content = orderSuccess.render({
+        totalPrice: cart.getTotalPrice(),
+    });
+
+    cart.clear();
+    buyer.clear();
+    events.emit('cart:change');
+});
+
+events.on("order:done", () => {
+    events.emit('modal:close');
+});
+
+events.on("modal:close", () => {
+    modal.close();
+});
+
+events.on("cart:change", () => {
+    header.render({
+        counter: cart.getItemCount(),
+    });
+});
+
+events.on("product:select", (product: IProduct) => {
+    const modalItem = new ProductViewItem(
+        cloneTemplate(modalItemTmpl),
+        {
+            onAddToCartClick() {
+                cart.addItem(product);
+                events.emit("cart:change", product);
+                modal.close();
+            }
+        },
+    );
+
+    modal.content = modalItem.render(product);
+    modal.open();
+
+    console.log("Каталог — карточка нажата!", product);
+});

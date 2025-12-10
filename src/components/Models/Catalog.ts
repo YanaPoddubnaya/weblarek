@@ -4,8 +4,15 @@ class Catalog {
     private products: IProduct[] = [];
     private selectedProduct: IProduct | null = null;
 
+    constructor(private _imageCDN: string) {
+    }
+
     setProducts(products: IProduct[]): void {
-        this.products = products;
+        this.products = products.map((product) => {
+            product.image = this._imageCDN + product.image;
+
+            return product;
+        });
     }
 
     getProducts(): IProduct[] {
