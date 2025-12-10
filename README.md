@@ -171,3 +171,127 @@ const apiService = new ApiService(api);
 const products = await apiService.fetchProducts();
 console.log('Полученные товары:', products);
 
+### View
+Слой представления
+
+### class Component
+Поля:
+`container: HTML Element;
+Методы класса:
+`render(data?: Partial<T>): HTMLElement;
+
+### class Header
+Поля:
+`basketButton: HTMLButtonElement;
+`counterElement: HTMLElement;
+
+Методы класса:
+`set counter(value:number);
+
+Interface:
+`HeaderData(counter:number);
+
+### class Gallery
+Поля:
+`catalogElement:HTMLElement;
+
+Методы класса:
+`set catalog(items: HTMLElement[]);
+
+Interface:
+`GalleryData (Catalog: HTMLElement[]);
+
+### class Modal
+Поля:
+`contentElement : HTMLElement;
+`closeButton: HTMLButtonElement;
+
+Методы класса: 
+`set content (item: HTML Element);
+
+Interface: 
+`Modal Window (content: HTML Element);
+
+### class ProductBaseView
+Поля:
+`private _title: HTMLElement;
+`private _price: HTMLElement;
+
+Методы класса:
+`set title (value: string);
+`set price (value: number);
+
+### class ProductCardItem
+Поля:
+`index: HTMLElement;
+`deleteButton: HTMLButtonElement;
+
+Методы класса:
+`set index(value: number);
+
+### class ProductViewItem
+Поля:
+`_image: HTMLImageElement;
+`_category: HTMLElement;
+`_description: HTMLElement;
+`_buyButton: HTMLButtonElement;
+
+Методы класса:
+`set _image (value: string);
+`set _category (value: string);
+`set _description (value: string);
+
+### class ProductGalleryItem
+Поля:
+`image: HTMLImageElement;
+`category: HTMLElement;
+
+Методы класса:
+`set image (value: string);
+`set category (value: string);
+
+
+### class Cart
+Поля:
+`items: HTMLElement;
+`totalPrice: number;
+`orderButton: HTMLElement; 
+
+Методы класса:
+`set itemsList (value: HTMLElement[]);
+`set totalPrice(value:number);
+
+Interface:
+CartData
+`items: HTMLElement[];
+`totalPrice: number;
+
+### class BaseForm
+Поля:
+`actionButton: HTMLButtonElement;
+
+### class ContactsForm
+Поля:
+`emailInput: HTMLInputElement;
+`phoneInput: HTMLInputElement;
+
+### class OrderFrom
+Поля:
+`ardButton: HTMLButtonElement;
+`cashButton: HTMLButtonElement;
+`inputAddres: HTMLInputElement;
+
+### class OrderSuccess
+Поля:
+`description: HTMLElement;
+`doneButton: HTMLButtonElement;
+
+Методы класса: 
+`set totalPrice(value:number);
+
+Interface
+`IOrderSuccess (totalPrice: number);
+
+
+### Presenter
+
