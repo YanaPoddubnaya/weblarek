@@ -176,20 +176,20 @@ console.log('Полученные товары:', products);
 
 ### class Component
 Поля:
-`container: HTML Element;
+`container: HTML Element`;
 Методы класса:
-`render(data?: Partial<T>): HTMLElement;
+`render(data?: Partial<T>): HTMLElement`;
 
 ### class Header
 Поля:
-`basketButton: HTMLButtonElement;
-`counterElement: HTMLElement;
+`basketButton: HTMLButtonElement`;
+`counterElement: HTMLElement`;
 
 Методы класса:
-`set counter(value:number);
+`set counter(value:number)`;
 
 Interface:
-`HeaderData(counter:number);
+`HeaderData(counter:number)`;
 
 ### class Gallery
 Поля:
@@ -277,7 +277,7 @@ CartData
 
 ### class OrderFrom
 Поля:
-`ardButton: HTMLButtonElement;
+`cardButton: HTMLButtonElement;
 `cashButton: HTMLButtonElement;
 `inputAddres: HTMLInputElement;
 
