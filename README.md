@@ -192,9 +192,6 @@ Interface:
 `HeaderData(counter:number)`;
 
 ### class Gallery
-Поля:
-`catalogElement:HTMLElement`;
-
 Методы класса:
 `set catalog(items: HTMLElement[])`;
 
@@ -221,13 +218,17 @@ Interface:
 `set title (value: string)`;
 `set price (value: number)`;
 
-### class ProductCardItem
+### class ProductCartItem
 Поля:
 `index: HTMLElement`;
 `deleteButton: HTMLButtonElement`;
 
 Методы класса:
 `set index(value: number)`;
+
+Interface:
+`IProductCartItemActions(onRemoveCartClick(event: MouseEvent): void;)`;
+`ICartProduct(index:number)`;
 
 ### class ProductViewItem
 Поля:
@@ -241,6 +242,9 @@ Interface:
 `set _category (value: string)`;
 `set _description (value: string)`;
 
+Interface:
+`IProductViewItemActions(onAddToCartClick(event: MouseEvent): void) `;
+
 ### class ProductGalleryItem
 Поля:
 `image: HTMLImageElement`;
@@ -250,15 +254,18 @@ Interface:
 `set image (value: string)`;
 `set category (value: string)`;
 
+Interface:
+`IProductViewItemActions(onAddToCartClick(event: MouseEvent): void) `;
 
-### class Cart
+
+### class CartView
 Поля:
-`items: HTMLElement`;
-`totalPrice: number`;
+`itemsContainer: HTMLElement`;
+`totalPriceEl: number`;
 `orderButton: HTMLElement`; 
 
 Методы класса:
-`set itemsList (value: HTMLElement[])`;
+`set items(value: HTMLElement[])`;
 `set totalPrice(value:number)`;
 
 Interface:
@@ -269,6 +276,7 @@ CartData
 ### class BaseForm
 Поля:
 `actionButton: HTMLButtonElement`;
+`errorElement: HTMLElement`;
 
 ### class ContactsForm
 Поля:
@@ -294,4 +302,16 @@ Interface
 
 
 ### Presenter
+`catalog:change` - получение массива товаров и создание карточек для галереи;
+`cart:change` - обновляет количество товаров в шапке и рендерит корзину;
+`buyer:change` - обрабатывает валидацию данных формы;
+`product:select` - добавляет товар в корзину и обновляет корзину;
+`basket:open` - рендерит содержимое корзины и открывает модальное окно;
+`cart:paymentDetails` - подставляет форму оплаты (OrderForm) в модальное окно;
+`cart:contactDetails` - подставляет форму контактов (ContactsForm) в модальное окно;
+`form:paymentMethodChange` - обновляет данные в модели Buyer и проверяет валидацию;
+`form:detailsChange` - обновляет данные покупателя и проверяет валидацию;
+`cart:done` - открывает окно успешного завершения заказа (OrderSuccess), очищает корзину и данные покупателя;
+`order:done` - закрывает модальное окно;
+`modal:close` - закрывает модальное окно;
 
