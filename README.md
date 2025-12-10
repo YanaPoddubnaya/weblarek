@@ -193,104 +193,104 @@ Interface:
 
 ### class Gallery
 Поля:
-`catalogElement:HTMLElement;
+`catalogElement:HTMLElement`;
 
 Методы класса:
-`set catalog(items: HTMLElement[]);
+`set catalog(items: HTMLElement[])`;
 
 Interface:
-`GalleryData (Catalog: HTMLElement[]);
+`GalleryData (Catalog: HTMLElement[])`;
 
 ### class Modal
 Поля:
-`contentElement : HTMLElement;
-`closeButton: HTMLButtonElement;
+`contentElement : HTMLElement`;
+`closeButton: HTMLButtonElement`;
 
 Методы класса: 
-`set content (item: HTML Element);
+`set content (item: HTML Element)`;
 
 Interface: 
-`Modal Window (content: HTML Element);
+`Modal Window (content: HTML Element)`;
 
 ### class ProductBaseView
 Поля:
-`private _title: HTMLElement;
-`private _price: HTMLElement;
+`private _title: HTMLElement`;
+`private _price: HTMLElement`;
 
 Методы класса:
-`set title (value: string);
-`set price (value: number);
+`set title (value: string)`;
+`set price (value: number)`;
 
 ### class ProductCardItem
 Поля:
-`index: HTMLElement;
-`deleteButton: HTMLButtonElement;
+`index: HTMLElement`;
+`deleteButton: HTMLButtonElement`;
 
 Методы класса:
-`set index(value: number);
+`set index(value: number)`;
 
 ### class ProductViewItem
 Поля:
-`_image: HTMLImageElement;
-`_category: HTMLElement;
-`_description: HTMLElement;
-`_buyButton: HTMLButtonElement;
+`_image: HTMLImageElement`;
+`_category: HTMLElement`;
+`_description: HTMLElement`;
+`_buyButton: HTMLButtonElement`;
 
 Методы класса:
-`set _image (value: string);
-`set _category (value: string);
-`set _description (value: string);
+`set _image (value: string)`;
+`set _category (value: string)`;
+`set _description (value: string)`;
 
 ### class ProductGalleryItem
 Поля:
-`image: HTMLImageElement;
-`category: HTMLElement;
+`image: HTMLImageElement`;
+`category: HTMLElement`;
 
 Методы класса:
-`set image (value: string);
-`set category (value: string);
+`set image (value: string)`;
+`set category (value: string)`;
 
 
 ### class Cart
 Поля:
-`items: HTMLElement;
-`totalPrice: number;
-`orderButton: HTMLElement; 
+`items: HTMLElement`;
+`totalPrice: number`;
+`orderButton: HTMLElement`; 
 
 Методы класса:
-`set itemsList (value: HTMLElement[]);
-`set totalPrice(value:number);
+`set itemsList (value: HTMLElement[])`;
+`set totalPrice(value:number)`;
 
 Interface:
 CartData
-`items: HTMLElement[];
-`totalPrice: number;
+`items: HTMLElement[]`;
+`totalPrice: number`;
 
 ### class BaseForm
 Поля:
-`actionButton: HTMLButtonElement;
+`actionButton: HTMLButtonElement`;
 
 ### class ContactsForm
 Поля:
-`emailInput: HTMLInputElement;
-`phoneInput: HTMLInputElement;
+`emailInput: HTMLInputElement`;
+`phoneInput: HTMLInputElement`;
 
 ### class OrderFrom
 Поля:
-`cardButton: HTMLButtonElement;
-`cashButton: HTMLButtonElement;
-`inputAddres: HTMLInputElement;
+`cardButton: HTMLButtonElement`;
+`cashButton: HTMLButtonElement`;
+`inputAddres: HTMLInputElement`;
 
 ### class OrderSuccess
 Поля:
-`description: HTMLElement;
-`doneButton: HTMLButtonElement;
+`description: HTMLElement`;
+`doneButton: HTMLButtonElement`;
 
 Методы класса: 
-`set totalPrice(value:number);
+`set totalPrice(value:number)`;
 
 Interface
-`IOrderSuccess (totalPrice: number);
+`IOrderSuccess (totalPrice: number)`;
 
 
 ### Presenter
