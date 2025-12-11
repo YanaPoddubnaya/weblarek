@@ -14,9 +14,17 @@ export class Modal extends Component<ModalWindow>{
         this.contentElement = ensureElement<HTMLElement>('.modal__content', this.container);
         this.closeButton = ensureElement<HTMLButtonElement>('.modal__close', this.container);
 
+        //закрытие по кнопке
         this.closeButton.addEventListener('click', (event) => {
             this.events.emit('modal:close', event);
         });
+
+        //закрытие по оверлею
+        this.container.addEventListener('click',(event) => {
+            if(event.target === this.container) {
+                this.events.emit('modal:close', event);
+            }
+        } )
 
     }
 

@@ -5,6 +5,7 @@ import type { IEvents } from "../base/Events.ts";
 interface CartData {
     items: HTMLElement[];
     totalPrice: number;
+    orderButtonActive: boolean;
 }
 
 export class CartView extends Component<CartData> {
@@ -26,6 +27,10 @@ export class CartView extends Component<CartData> {
 
     set items(value: HTMLElement[]) {
         this.itemsContainer.replaceChildren(...value);
+    }
+
+    set orderButtonActive(value: boolean) {
+        this.orderButton.disabled = !value;
     }
 
     set totalPrice(value: number) {

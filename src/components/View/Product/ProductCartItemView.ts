@@ -1,5 +1,5 @@
 import { ensureElement } from "../../../utils/utils.ts";
-import { ProductBaseView } from "./ProductBaseView.ts";
+import { ProductBaseItemView } from "./ProductBaseItemView.ts";
 import {IProduct} from "../../../types";
 
 interface IProductCartItemActions {
@@ -10,7 +10,7 @@ interface ICartProduct extends IProduct {
     index: number;
 }
 
-export class ProductCartItem extends ProductBaseView<ICartProduct> {
+export class ProductCartItemView extends ProductBaseItemView<ICartProduct> {
     protected _index: HTMLElement;
     protected _deleteButton: HTMLButtonElement;
 

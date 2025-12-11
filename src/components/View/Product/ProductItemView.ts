@@ -1,14 +1,20 @@
 import {ensureElement} from "../../../utils/utils.ts";
-import { ProductBaseView } from "./ProductBaseView.ts";
+import { ProductBaseItemView } from "./ProductBaseItemView.ts";
 import { categoryMap } from "../../../utils/constants.ts";
+import {IProduct} from "../../../types";
 
 export type CategoryKey = keyof typeof categoryMap;
 
 interface IProductViewItemActions {
-    onAddToCartClick(event: MouseEvent): void;
+    onCartBtnClick(event: MouseEvent): void;
 }
 
-export class ProductViewItem extends ProductBaseView {
+interface IProductViewItemProduct extends IProduct{
+    buyButtonText: string;
+    buyAllowed: boolean;
+}
+
+export class ProductItemView extends ProductBaseItemView<IProductViewItemProduct> {
     protected _image: HTMLImageElement;
     protected _category: HTMLElement;
     protected _description: HTMLElement;
@@ -20,16 +26,15 @@ export class ProductViewItem extends ProductBaseView {
         this._image = ensureElement<HTMLImageElement> ('.card__image', this.container);
         this._category = ensureElement<HTMLElement>('.card__category', this.container);
         this._description = ensureElement<HTMLElement>('.card__text', this.container);
-        this._buyButton = ensureElement<HTMLButtonElement>('.card__button', this.container)
+        this._buyButton = ensureElement<HTMLButtonElement>('.card__button', this.container);
 
         this._buyButton.addEventListener('click', (event) => {
-            actions.onAddToCartClick(event);
+            actions.onCartBtnClick(event);
         });
     }
 
     set image(value: string) {
-        this._image.src = value;
-        this._image.alt = value;
+        this.setImage(this._image, value, value);
     }
 
     set category(value: string) {
@@ -39,6 +44,14 @@ export class ProductViewItem extends ProductBaseView {
 
     set description (value: string) {
         this._description.textContent = value;
+    }
+
+    set buyButtonText (value: string) {
+        this._buyButton.textContent = value;
+    }
+
+    set buyAllowed(value: boolean) {
+        this._buyButton.disabled = !value;
     }
 
     protected _setCategoryClass(value: CategoryKey): void {

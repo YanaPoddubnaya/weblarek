@@ -212,7 +212,7 @@ Interface:
 Interface: 
 `Modal Window (content: HTML Element)`;
 
-### class ProductBaseView
+### class ProductBaseItemView
 Поля:
 `private _title: HTMLElement`;
 `private _price: HTMLElement`;
@@ -229,7 +229,7 @@ Interface:
 Методы класса:
 `set index(value: number)`;
 
-### class ProductViewItem
+### class ProductItemView
 Поля:
 `_image: HTMLImageElement`;
 `_category: HTMLElement`;

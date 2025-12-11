@@ -1,10 +1,10 @@
 import {ensureElement} from "../../../utils/utils.ts";
 import {Component} from "../../base/Component.ts"
 import {IProduct} from "../../../types";
-import {CategoryKey} from "./ProductViewItem.ts";
+import {CategoryKey} from "./ProductItemView.ts";
 import {categoryMap} from "../../../utils/constants.ts";
 
-export class ProductBaseView<T extends IProduct = IProduct> extends Component<T> {
+export class ProductBaseItemView<T extends IProduct = IProduct> extends Component<T> {
     private _title: HTMLElement;
     private _price: HTMLElement;
 

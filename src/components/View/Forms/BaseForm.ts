@@ -1,8 +1,8 @@
 import {ensureElement} from "../../../utils/utils.ts";
 import {Component} from "../../base/Component.ts"
-import type { IEvents } from "../../base/Events.ts";
+import type {IEvents} from "../../base/Events.ts";
 
-export class BaseForm extends Component<any>{
+export class BaseForm extends Component<any> {
     protected actionButton: HTMLButtonElement;
     protected errorElement: HTMLElement;
 

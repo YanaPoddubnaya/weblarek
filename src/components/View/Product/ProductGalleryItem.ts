@@ -1,12 +1,12 @@
 import {ensureElement} from "../../../utils/utils.ts";
-import { ProductBaseView } from "./ProductBaseView.ts";
-import {CategoryKey} from "./ProductViewItem.ts";
+import { ProductBaseItemView } from "./ProductBaseItemView.ts";
+import {CategoryKey} from "./ProductItemView.ts";
 
 interface IProductGalleryItemActions {
     onClick(event: MouseEvent): void;
 }
 
-export class ProductGalleryItem extends ProductBaseView {
+export class ProductGalleryItem extends ProductBaseItemView {
     protected _image: HTMLImageElement;
     protected _category: HTMLElement;
 
@@ -19,8 +19,7 @@ export class ProductGalleryItem extends ProductBaseView {
     }
 
     set image(value: string) {
-        this._image.src = value;
-        this._image.alt = value;
+        this.setImage(this._image, value, value);
     }
 
     set category(value: string) {
