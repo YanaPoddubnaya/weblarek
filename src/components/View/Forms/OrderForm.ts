@@ -40,6 +40,18 @@ export class OrderForm extends BaseForm {
         });
     }
 
+    set card(value: string) {
+        this.cardButton.value = value;
+    }
+
+    set cash(value: string) {
+        this.cashButton.value = value;
+    }
+
+    set address(value:string) {
+        this.inputAddress.value = value;
+    }
+
     protected onSubmit(): void {
         this.events.emit('cart:contactDetails');
     }

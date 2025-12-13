@@ -121,11 +121,19 @@ events.on("basket:open", () => {
 });
 
 events.on("cart:paymentDetails", () => {
-    modal.content = orderForm.render();
+    const buyerData = buyer.getData();
+    modal.content = orderForm.render({
+        payment: buyerData.payment,
+        address: buyerData.address,
+    });
 });
 
 events.on("cart:contactDetails", () => {
-    modal.content = contactsForm.render();
+    const buyerData = buyer.getData();
+    modal.content = contactsForm.render({
+        email: buyerData.email,
+        phone: buyerData.phone,
+    });
 });
 
 events.on("form:paymentMethodChange", (event: any) => {

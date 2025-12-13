@@ -2,7 +2,9 @@ import {ensureElement} from "../../../utils/utils.ts";
 import {Component} from "../../base/Component.ts"
 import type {IEvents} from "../../base/Events.ts";
 
-export abstract class BaseForm extends Component<any> {
+export interface BaseFormData {}
+
+export abstract class BaseForm<T extends BaseFormData = BaseFormData> extends Component<T> {
     protected actionButton: HTMLButtonElement;
     protected errorElement: HTMLElement;
     protected abstract onSubmit(): void;

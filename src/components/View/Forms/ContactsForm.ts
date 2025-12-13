@@ -1,8 +1,13 @@
-import { BaseForm } from "./BaseForm.ts";
+import {BaseForm, BaseFormData} from "./BaseForm.ts";
 import type { IEvents } from "../../base/Events.ts";
 import {ensureElement} from "../../../utils/utils.ts";
 
-export class ContactsForm extends BaseForm {
+interface ContactsFormData extends BaseFormData{
+    email: string | null;
+    phone: string | null;
+}
+
+export class ContactsForm extends BaseForm<ContactsFormData> {
     private emailInput: HTMLInputElement;
     private phoneInput: HTMLInputElement;
 
@@ -26,6 +31,15 @@ export class ContactsForm extends BaseForm {
             });
         });
     }
+
+    set email(value: string) {
+        this.emailInput.value = value;
+    }
+
+    set phone(value: string) {
+        this.phoneInput.value = value;
+    }
+
     protected onSubmit(): void {
         const orderData = {
             buyer: {
