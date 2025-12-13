@@ -18,15 +18,6 @@ export class ProductGalleryItem extends ProductBaseItemView {
         this.container.addEventListener('click', actions.onClick);
     }
 
-    set image(value: string) {
-        this.setImage(this._image, value, value);
-    }
-
-    set category(value: string) {
-        this._category.textContent = value;
-        this._setCategoryClass(value as CategoryKey);
-    }
-
     protected _setCategoryClass(value: CategoryKey): void {
         const categoryClass = this._getCategoryClassByCategory(value as CategoryKey)
         this._category.classList.add(categoryClass);

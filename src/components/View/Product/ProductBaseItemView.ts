@@ -7,6 +7,8 @@ import {categoryMap} from "../../../utils/constants.ts";
 export class ProductBaseItemView<T extends IProduct = IProduct> extends Component<T> {
     private _title: HTMLElement;
     private _price: HTMLElement;
+    protected _image?: HTMLImageElement;
+    protected _category?: HTMLElement;
 
     constructor(container: HTMLElement) {
         super(container);
@@ -25,5 +27,23 @@ export class ProductBaseItemView<T extends IProduct = IProduct> extends Componen
 
     protected _getCategoryClassByCategory(key: CategoryKey): string {
         return categoryMap[key] || '';
+    }
+
+    set image(value: string) {
+        if (this._image) {
+            this.setImage(this._image, value, value);
+        }
+    }
+
+    set category(value: string) {
+        if (this._category) {
+            this._category.textContent = value;
+            this._setCategoryClass(value as CategoryKey);
+        }
+    }
+
+    protected _setCategoryClass(value: CategoryKey): void {
+        const categoryClass = this._getCategoryClassByCategory(value);
+        this._category?.classList.add(categoryClass);
     }
 }

@@ -2,16 +2,23 @@ import {ensureElement} from "../../../utils/utils.ts";
 import {Component} from "../../base/Component.ts"
 import type {IEvents} from "../../base/Events.ts";
 
-export class BaseForm extends Component<any> {
+export abstract class BaseForm extends Component<any> {
     protected actionButton: HTMLButtonElement;
     protected errorElement: HTMLElement;
+    protected abstract onSubmit(): void;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
 
         this.actionButton = ensureElement<HTMLButtonElement>('.button', this.container);
         this.errorElement = ensureElement<HTMLElement>('.form__errors', this.container);
+
+        this.container.addEventListener('submit', (event) => {
+            event.preventDefault();
+            this.onSubmit();
+        });
     }
+
 
     public setError(message: string) {
         this.errorElement.textContent = message;
@@ -23,3 +30,4 @@ export class BaseForm extends Component<any> {
         this.actionButton.disabled = false;
     }
 }
+

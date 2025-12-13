@@ -16,19 +16,19 @@ class Cart {
             return false;
         }
         this.items.push(item);
-        this.events.emit("cart:addItem");
+        this.events.emit("cart:change");
 
         return true;
     }
 
     removeItem(item: IProduct): void {
         this.items = this.items.filter(cartItem => cartItem.id !== item.id);
-        this.events.emit("cart:removeItem");
+        this.events.emit("cart:change");
     }
 
     clear(): void {
         this.items = [];
-        this.events.emit("cart:clear");
+        this.events.emit("cart:change");
     }
 
     getTotalPrice(): number {

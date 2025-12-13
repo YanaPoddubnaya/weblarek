@@ -33,15 +33,6 @@ export class ProductItemView extends ProductBaseItemView<IProductViewItemProduct
         });
     }
 
-    set image(value: string) {
-        this.setImage(this._image, value, value);
-    }
-
-    set category(value: string) {
-        this._category.textContent = value;
-        this._setCategoryClass(value as CategoryKey);
-    }
-
     set description (value: string) {
         this._description.textContent = value;
     }

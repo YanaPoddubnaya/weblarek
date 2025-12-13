@@ -25,11 +25,15 @@ export class ContactsForm extends BaseForm {
                 value: this.phoneInput.value
             });
         });
+    }
+    protected onSubmit(): void {
+        const orderData = {
+            buyer: {
+                email: this.emailInput.value,
+                phone: this.phoneInput.value,
+            }
+        };
 
-        this.actionButton.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            this.events.emit('cart:done');
-        });
+        this.events.emit('form:submitOrder', orderData);
     }
 }

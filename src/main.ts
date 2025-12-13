@@ -9,7 +9,6 @@ import ApiService from './components/Api/ApiService.ts';
 import {Api} from './components/base/Api';
 import {Gallery} from "./components/View/Gallery.ts";
 
-import {apiProducts} from './utils/data';
 import {cloneTemplate} from "./utils/utils.ts";
 import {API_URL, CDN_URL} from "./utils/constants";
 
@@ -33,47 +32,23 @@ const buyer = new Buyer(events);
 const api = new Api(API_URL);
 const apiService = new ApiService(api);
 
-//проверка методов
-catalog.setProducts(apiProducts.items);
-console.log('Массив товаров из каталога:', catalog.getProducts());
-const idToCheck = apiProducts.items[0].id;
-console.log('Товар по id:', catalog.getProductById(idToCheck));
-
-cart.addItem(apiProducts.items[0]);
-if (cart.hasItem(idToCheck)) {
-    console.log(`Товар с id ${idToCheck} есть в корзине.`);
-} else {
-    console.log(`Товара с id ${idToCheck} в корзине нет.`);
-}
-
-//console.log('Добавление товара в корзину:', cart.addItem())
-console.log('Товары в корзине:', cart.getItems());
-console.log('Количество товаров в корзине:', cart.getItemCount());
-console.log('Общая стоимость:', cart.getTotalPrice());
-const itemToRemove = cart.getItems()[0];
-console.log('Удаление товара из корзины:', cart.removeItem(itemToRemove));
-console.log('Очистка корзины:', cart.clear());
-
-
-buyer.setData({payment: 'card', email: 'user@example.com', phone: '12345', address: 'г.Москва, ул.Ленина 372'});
-console.log('Данные покупателя:', buyer.getData());
-console.log('Очистка данных покупки:', buyer.clear());
-console.log('Ошибки валидации:', buyer.validate());
-
-
-const validationErrors = buyer.validate();
-if (Object.keys(validationErrors).length > 0) {
-    // есть ошибки, показываем пользователю
-    console.log('Ошибки валидации:', validationErrors);
-} else {
-    // ошибок нет, можно продолжать
-}
 
 async function fetchAndSaveProducts() {
     try {
         const products = await apiService.fetchProducts();
         catalog.setProducts(products);
-        console.log('Каталог товаров:', catalog.getProducts());
+        const galleryItems = catalog.getProducts().map((product: IProduct) => {
+            const cardView = new ProductGalleryItem(
+                cloneTemplate(cardCatalogTmpl),
+                {
+                    onClick: () => events.emit('product:select', product),
+                }
+            );
+            return cardView.render(product);
+        });
+
+        gallery.render({ catalog: galleryItems });
+
     } catch (error) {
         console.error('Ошибка получения каталога:', error);
     }
@@ -97,19 +72,6 @@ const modalItemTmpl = document.querySelector('#card-preview') as HTMLTemplateEle
 
 // gallery
 const gallery = new Gallery(galleryEl);
-const galleryItems = catalog.getProducts().map((product: IProduct) => {
-    const cardView = new ProductGalleryItem(
-        cloneTemplate(cardCatalogTmpl),
-        {
-            onClick: () => events.emit('product:select', product),
-        }
-    );
-
-    return cardView.render(product);
-});
-
-gallery.render({ catalog: galleryItems});
-
 
 // cart
 const cartItemTmpl = document.querySelector('#card-basket') as HTMLTemplateElement;
@@ -206,14 +168,37 @@ events.on("form:detailsChange", (event: any) => {
     contactsForm.clearError();
 });
 
-events.on("cart:done", () => {
-    modal.content = orderSuccess.render({
-        totalPrice: cart.getTotalPrice(),
-    });
+events.on("form:submitOrder", async () => {
+    try {
+        const buyerData = buyer.getData();
+        const cartItems = cart.getItems();
+        const total = cart.getTotalPrice();
 
-    cart.clear();
-    buyer.clear();
+        const fullOrder = {
+            payment: buyerData.payment,
+            address: buyerData.address,
+            phone: buyerData.phone,
+            email: buyerData.email,
+            total: total,
+            items: cartItems.map((item) => item.id),
+        };
+
+        const success = await apiService.sendOrder(fullOrder);
+
+        if (success) {
+            modal.content = orderSuccess.render({
+                totalPrice: total,
+            });
+
+            cart.clear();
+            buyer.clear();
+        }
+    } catch (error) {
+        console.error("Ошибка отправки заказа:", error);
+        contactsForm.setError("Не удалось отправить заказ. Попробуйте снова.");
+    }
 });
+
 
 events.on("order:done", () => {
     events.emit('modal:close');
@@ -231,18 +216,6 @@ events.on("cart:modalAddItem", (product: IProduct) => {
 events.on("cart:modalRemoveItem", (product: IProduct) => {
     cart.removeItem(product);
     renderProductViewItemModal(product);
-});
-
-events.on("cart:addItem", () => {
-    events.emit("cart:change");
-});
-
-events.on("cart:removeItem", () => {
-    events.emit("cart:change");
-});
-
-events.on("cart:clear", () => {
-    events.emit("cart:change");
 });
 
 events.on("cart:change", () => {

@@ -13,7 +13,7 @@ class ApiService {
     }
 
     async sendOrder(orderData: object): Promise<boolean> {
-        await this.api.post('/orders', orderData, 'POST' as ApiPostMethods);
+        await this.api.post('/order', orderData, 'POST' as ApiPostMethods);
         return true;
     }
 }

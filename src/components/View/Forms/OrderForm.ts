@@ -38,12 +38,10 @@ export class OrderForm extends BaseForm {
                 value: this.inputAddress.value
             });
         });
+    }
 
-        this.actionButton.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            this.events.emit('cart:contactDetails');
-        });
+    protected onSubmit(): void {
+        this.events.emit('cart:contactDetails');
     }
 
     private selectPayment(method: 'card' | 'cash') {
